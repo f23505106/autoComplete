@@ -27,6 +27,6 @@ public interface CatalogueDao {
     @Delete
     void delete(CatalogueEntity post);
 
-    @Query("SELECT * FROM Post")
+    @Query("SELECT * FROM catalogue")
     List<CatalogueEntity> findAll();
 }
