@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Auto Complete</string>
+    <string name="logo">logo</string>
+    <string name="default_title">title</string>
 </resources>
