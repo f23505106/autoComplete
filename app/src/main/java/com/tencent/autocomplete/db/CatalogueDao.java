@@ -5,6 +5,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.RoomWarnings;
 import android.arch.persistence.room.Update;
 
 import java.util.List;
@@ -16,17 +17,18 @@ import java.util.List;
 @Dao
 public interface CatalogueDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void saveAll(List<CatalogueEntity> posts);
+    void saveAll(List<CatalogueEntity> cats);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void save(CatalogueEntity post);
+    long save(CatalogueEntity cats);
 
-    @Update
-    void update(CatalogueEntity post);
-
-    @Delete
-    void delete(CatalogueEntity post);
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    @Query("SELECT id FROM catalogue WHERE cat_name = :cat LIMIT 1")
+    CatalogueEntity findCatalogue(String cat);
 
     @Query("SELECT * FROM catalogue")
     List<CatalogueEntity> findAll();
+
+    @Query("DELETE FROM catalogue")
+    void deleteAll();
 }

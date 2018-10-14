@@ -1,0 +1,214 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "714a31752a9d69b5ccf9e625fe9f7791",
+    "entities": [
+      {
+        "tableName": "catalogue",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `cat_name` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "cat_name",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_catalogue_cat_name",
+            "unique": true,
+            "columnNames": [
+              "cat_name"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_catalogue_cat_name` ON `${TABLE_NAME}` (`cat_name`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "abbr",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `abbr_sid` INTEGER NOT NULL, `abbr_name` TEXT, `logo_uri` TEXT, `cat_id` INTEGER NOT NULL, FOREIGN KEY(`cat_id`) REFERENCES `catalogue`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sid",
+            "columnName": "abbr_sid",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "abbr_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "logoUri",
+            "columnName": "logo_uri",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "catId",
+            "columnName": "cat_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_abbr_cat_id",
+            "unique": true,
+            "columnNames": [
+              "cat_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_abbr_cat_id` ON `${TABLE_NAME}` (`cat_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "catalogue",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cat_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "detail",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `phone_name` TEXT, `name_t9` TEXT, `name_t9_index` TEXT, `name_t9_abbr` TEXT, `phone_number` TEXT, `abbr_id` INTEGER NOT NULL, FOREIGN KEY(`abbr_id`) REFERENCES `abbr`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "phone_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "t9",
+            "columnName": "name_t9",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "t9Index",
+            "columnName": "name_t9_index",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "t9Abbr",
+            "columnName": "name_t9_abbr",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "number",
+            "columnName": "phone_number",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "abbrId",
+            "columnName": "abbr_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_detail_phone_number",
+            "unique": true,
+            "columnNames": [
+              "phone_number"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_detail_phone_number` ON `${TABLE_NAME}` (`phone_number`)"
+          },
+          {
+            "name": "index_detail_name_t9",
+            "unique": false,
+            "columnNames": [
+              "name_t9"
+            ],
+            "createSql": "CREATE  INDEX `index_detail_name_t9` ON `${TABLE_NAME}` (`name_t9`)"
+          },
+          {
+            "name": "index_detail_name_t9_abbr",
+            "unique": false,
+            "columnNames": [
+              "name_t9_abbr"
+            ],
+            "createSql": "CREATE  INDEX `index_detail_name_t9_abbr` ON `${TABLE_NAME}` (`name_t9_abbr`)"
+          },
+          {
+            "name": "index_detail_abbr_id",
+            "unique": false,
+            "columnNames": [
+              "abbr_id"
+            ],
+            "createSql": "CREATE  INDEX `index_detail_abbr_id` ON `${TABLE_NAME}` (`abbr_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "abbr",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "abbr_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"714a31752a9d69b5ccf9e625fe9f7791\")"
+    ]
+  }
+}
