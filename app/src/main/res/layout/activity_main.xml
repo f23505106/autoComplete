@@ -8,7 +8,9 @@
     <AutoCompleteTextView
         android:id="@+id/search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:hint="T9 查询 包括号码,名称全拼,名称简拼"
+        android:inputType="phone"/>
 
     <Button
         android:layout_width="wrap_content"
